@@ -1,6 +1,7 @@
 
+
 -- Volcando estructura de base de datos para VolleyApp
-CREATE DATABASE IF NOT EXISTS `volleyapp` 
+CREATE DATABASE IF NOT EXISTS `volleyapp` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
 USE `VolleyApp`;
 
 -- Volcando estructura para tabla VolleyApp.amonestacion
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `amonestacion` (
   CONSTRAINT `FK_amonestacion_jugador` FOREIGN KEY (`id_jugador`) REFERENCES `jugador` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.arbitro
 CREATE TABLE IF NOT EXISTS `arbitro` (
@@ -30,10 +31,10 @@ CREATE TABLE IF NOT EXISTS `arbitro` (
   `titulo_arbitro` varchar(100) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id` (`id`),
-  CONSTRAINT `id` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_arbitro_usuario` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.asignacion
 CREATE TABLE IF NOT EXISTS `asignacion` (
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `asignacion` (
   CONSTRAINT `FK_asignacion_partido` FOREIGN KEY (`id_partido`) REFERENCES `partido` (`id_partido`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.detalle_set
 CREATE TABLE IF NOT EXISTS `detalle_set` (
@@ -62,17 +63,18 @@ CREATE TABLE IF NOT EXISTS `detalle_set` (
   CONSTRAINT `FK_detalle_set_partido` FOREIGN KEY (`id_partido`) REFERENCES `partido` (`id_partido`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.entrenador
 CREATE TABLE IF NOT EXISTS `entrenador` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `categoria` varchar(50) NOT NULL DEFAULT '0',
+  `categoria` varchar(50) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id` (`id`),
   CONSTRAINT `FK__usuario_entrenador` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.equipo
 CREATE TABLE IF NOT EXISTS `equipo` (
@@ -85,11 +87,23 @@ CREATE TABLE IF NOT EXISTS `equipo` (
   PRIMARY KEY (`id_equipo`),
   KEY `id_entrenador` (`id_entrenador`),
   KEY `id_jugador` (`id_jugador`),
-  CONSTRAINT `FK1` FOREIGN KEY (`id_entrenador`) REFERENCES `entrenador` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_equipo_entrenador` FOREIGN KEY (`id_entrenador`) REFERENCES `entrenador` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_equipo_jugador` FOREIGN KEY (`id_jugador`) REFERENCES `jugador` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- La exportación de datos fue deseleccionada.
 
+-- Volcando estructura para tabla VolleyApp.equipo_jugador
+CREATE TABLE IF NOT EXISTS `equipo_jugador` (
+  `id_equipo` int(11) DEFAULT NULL,
+  `id_jugador` int(11) DEFAULT NULL,
+  KEY `id_equipo` (`id_equipo`),
+  KEY `id_jugador` (`id_jugador`),
+  CONSTRAINT `FK_equipos_jugadores` FOREIGN KEY (`id_equipo`) REFERENCES `equipo` (`id_equipo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_jugadores_equipos` FOREIGN KEY (`id_jugador`) REFERENCES `jugador` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.jugador
 CREATE TABLE IF NOT EXISTS `jugador` (
@@ -101,6 +115,7 @@ CREATE TABLE IF NOT EXISTS `jugador` (
   CONSTRAINT `FK__usuario_jugador` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.partido
 CREATE TABLE IF NOT EXISTS `partido` (
@@ -116,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `partido` (
   CONSTRAINT `FK_partido_equipo_b` FOREIGN KEY (`equipo_b`) REFERENCES `equipo` (`id_equipo`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.resultado
 CREATE TABLE IF NOT EXISTS `resultado` (
@@ -133,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `resultado` (
   CONSTRAINT `FK__resultado_partido` FOREIGN KEY (`id_partido`) REFERENCES `partido` (`id_partido`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.sustitucion
 CREATE TABLE IF NOT EXISTS `sustitucion` (
@@ -155,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `sustitucion` (
   CONSTRAINT `FK_sustitucion_jugador_sale` FOREIGN KEY (`id_jugador_sale`) REFERENCES `jugador` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.tiempo_muerto
 CREATE TABLE IF NOT EXISTS `tiempo_muerto` (
@@ -171,17 +186,24 @@ CREATE TABLE IF NOT EXISTS `tiempo_muerto` (
   CONSTRAINT `FK_tiempo_muerto_partido` FOREIGN KEY (`id_partido`) REFERENCES `partido` (`id_partido`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
+-- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla VolleyApp.usuario
 CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL DEFAULT '0',
-  `apellidos` varchar(100) NOT NULL DEFAULT '0',
-  `telefono` varchar(10) NOT NULL DEFAULT '0',
+  `nombre` varchar(100) DEFAULT NULL,
+  `apellidos` varchar(100) DEFAULT NULL,
+  `telefono` varchar(10) DEFAULT NULL,
   `dni` varchar(10) NOT NULL,
   `f_nacimiento` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `id` (`id`),
   CONSTRAINT `FK_usuario` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- La exportación de datos fue deseleccionada.
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
